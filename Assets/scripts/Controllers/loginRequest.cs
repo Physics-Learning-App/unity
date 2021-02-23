@@ -4,7 +4,8 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 
 public class loginRequest : MonoBehaviour {
-	public Text username, password, textLoginFailed;
+	public Text username, textLoginFailed;
+	public InputField password;
 	public GameObject loadingScreen;
 	webAPI webApi;
 	private IEnumerator coroutine;
@@ -35,7 +36,19 @@ public class loginRequest : MonoBehaviour {
 			Debug.Log(test.error);
 		}
 		else {
-			processJsonData (test.downloadHandler.text);
+			string res = test.downloadHandler.text;
+			Debug.Log (res);
+			string errorsMessage = "";
+			if (res.Contains("error")) {
+				errorsResponse json = JsonUtility.FromJson<errorsResponse> (res);
+				foreach (string el in json.errors) {
+					errorsMessage = errorsMessage + el + ", ";
+				}
+				textLoginFailed.text = errorsMessage;
+			} else {
+				Debug.Log ("Login success");
+				processJsonData (res);
+			}
 		}
 	}
 
@@ -46,7 +59,7 @@ public class loginRequest : MonoBehaviour {
 		PlayerPrefs.Save ();
 		StopCoroutine (coroutine);
 		loadingScreen.SetActive (true);
-		GetComponent<fetchPlayer> ().tryFecth ();
+		GetComponent<fetchPlayer> ().tryFetch ();
 	}
 
 }

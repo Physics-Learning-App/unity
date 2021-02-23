@@ -11,9 +11,10 @@ public class controllerMusic : MonoBehaviour {
 	}
 
 
-	public void setBgm(int indexBgmList) {
+	public void setBgm(int indexBgmList, bool isLoop = true) {
 		thisAudioSource.Stop ();
 		thisAudioSource.clip = bgmList [indexBgmList];
 		thisAudioSource.Play ();
+		thisAudioSource.loop = isLoop;
 	}
 }

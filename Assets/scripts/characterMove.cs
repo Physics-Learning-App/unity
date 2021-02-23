@@ -22,15 +22,12 @@ public class characterMove : MonoBehaviour {
 			if (Input.GetKey (KeyCode.DownArrow) || Input.GetKey (KeyCode.S)) {
 				GetComponent<Rigidbody> ().velocity = new Vector3 (GetComponent<Rigidbody> ().velocity.x, GetComponent<Rigidbody> ().velocity.y, -3f);
 			}
-
-		} else {
-			GetComponent<Rigidbody> ().velocity = Vector3.zero;
-		}
-		if (GetComponent<Rigidbody> ().velocity == Vector3.zero) {
-			GetComponent<Animator> ().SetBool ("moving", false);
-		} else {
-			GetComponent<Animator> ().SetBool ("moving", true);
-		}
+			if (Input.anyKey == false) {
+				GetComponent<Animator> ().SetBool ("moving", false);
+				GetComponent<Rigidbody> ().velocity = Vector3.zero;
+			} else 
+				GetComponent<Animator> ().SetBool ("moving", true);
+		} else GetComponent<Animator> ().SetBool ("moving", false);
 		camera.transform.position = new Vector3(GetComponent<Transform> ().transform.position.x, camera.transform.position.y, GetComponent<Transform> ().transform.position.z);
 	}
 

@@ -17,11 +17,13 @@ public class fetchPlayer : MonoBehaviour {
 			Debug.Log (www.error);
 		} else {
 			Debug.Log (www.downloadHandler.text);
-			//processJsonData (www.downloadHandler.text);
+			if (!www.downloadHandler.text.Contains("errors")) {
+				processJsonData (www.downloadHandler.text);
+			}
 		}
 	}
 
-	public void tryFecth(){
+	public void tryFetch(){
 		var request = webApi.CreateApiGetRequest ("/player");
 		coroutine = fetchData (request);
 		StartCoroutine (coroutine);
@@ -30,8 +32,13 @@ public class fetchPlayer : MonoBehaviour {
 	private void processJsonData(string _url){
 		playerResponse jsonData = JsonUtility.FromJson<playerResponse> (_url);
 		PlayerPrefs.SetString ("playerName", jsonData.name);
+		PlayerPrefs.SetInt ("potion", jsonData.potion);
+		PlayerPrefs.SetFloat ("health", jsonData.health);
+		PlayerPrefs.SetInt ("coin", jsonData.coin);
+		PlayerPrefs.SetInt ("score", jsonData.score);
+		PlayerPrefs.SetInt ("currentStage", jsonData.currentStage);
+		PlayerPrefs.SetFloat ("positionX", jsonData.positionX);
+		PlayerPrefs.SetFloat ("positionZ", jsonData.positionZ);
 		PlayerPrefs.Save ();
-		StopCoroutine (coroutine);
-		GetComponent<controllerScenes> ().changeScreenTo ("gameplay");
 	}
 }

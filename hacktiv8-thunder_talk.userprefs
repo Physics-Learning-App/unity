@@ -1,9 +1,12 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.AttachToProcess" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\Controllers\fetchPlayer.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\monsterAction.cs">
     <Files>
-      <File FileName="Assets\scripts\Controllers\fetchPlayer.cs" Line="20" Column="6" />
-      <File FileName="Assets\scripts\Controllers\playerRequest.cs" Line="38" Column="6" NotebookId="1" />
+      <File FileName="Assets\scripts\monsterAction.cs" Line="12" Column="16" />
+      <File FileName="Assets\scripts\controllerActionNPC.cs" Line="88" Column="29" />
+      <File FileName="Assets\scripts\controllerUI.cs" Line="22" Column="2" NotebookId="1" />
+      <File FileName="Assets\scripts\Controllers\monsterRequest.cs" Line="1" Column="1" NotebookId="1" />
+      <File FileName="Assets\scripts\Controllers\playerRequest.cs" Line="1" Column="1" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

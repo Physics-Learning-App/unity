@@ -8,7 +8,9 @@ public class playerResponse {
 	public string name;
 	public int score;
 	public int potion;
-	public int health;
+	public float health;
 	public int coin;
-	public int UserId;
+	public float positionX;
+	public float positionZ;
+	public int currentStage;
 }

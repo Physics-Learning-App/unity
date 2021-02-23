@@ -5,14 +5,40 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class monsterRequest : MonoBehaviour {
-	private string baseUrl = "http://localhost:3000/monsters";
+	private string baseUrl = "http://localhost:4001/monsters";
 	public string[] questionEasy, questionMedium, questionHard;
 	public string[] answerEasy, answerMedium, answerHard;
+	public string[] choiceEasy, choiceMedium, choiceHard;
 
 	void Start(){
 		StartCoroutine (getDataEasy (baseUrl + "/easy"));
 		StartCoroutine (getDataMedium (baseUrl + "/medium"));
 		StartCoroutine (getDataHard (baseUrl + "/hard"));
+	}
+
+	public Problem getQuestion(string difficulty){
+		switch (difficulty) {
+		case "easy":
+			return new Problem {
+				question = questionEasy [0],
+				answer = answerEasy [0],
+				choices = choiceEasy [0]
+			};
+		case "medium":
+			return new Problem {
+				question = questionMedium [0],
+				answer = answerMedium [0],
+				choices = choiceMedium [0]
+			};
+		case "hard":
+			return new Problem {
+				question = questionHard [0],
+				answer = answerHard [0],
+				choices = choiceHard [0]
+			};
+		default:
+			return new Problem();
+		}
 	}
 
 	IEnumerator getDataEasy (string _url) {
@@ -24,6 +50,7 @@ public class monsterRequest : MonoBehaviour {
 		}
 		else {
 			processJsonDataEasy (www.downloadHandler.text);
+			Debug.Log (www.downloadHandler.text);
 		}
 	}
 
@@ -36,6 +63,7 @@ public class monsterRequest : MonoBehaviour {
 		}
 		else {
 			processJsonDataMedium (www.downloadHandler.text);
+			Debug.Log (www.downloadHandler.text);
 		}
 	}
 
@@ -48,6 +76,7 @@ public class monsterRequest : MonoBehaviour {
 		}
 		else {
 			processJsonDataHard (www.downloadHandler.text);
+			Debug.Log (www.downloadHandler.text);
 		}
 	}
 
@@ -59,12 +88,17 @@ public class monsterRequest : MonoBehaviour {
 			Array.Copy (questionEasy, tmp, questionEasy.Length);
 			questionEasy = new string[questionEasy.Length + 1];
 			Array.Copy (tmp, questionEasy, tmp.Length);
-			questionEasy [questionEasy.Length - 1] = el.question;
+			questionEasy [tmp.Length] = el.question;
 			tmp = new string[answerEasy.Length];
 			Array.Copy (answerEasy, tmp, answerEasy.Length);
 			answerEasy = new string[answerEasy.Length + 1];
 			Array.Copy (tmp, answerEasy, tmp.Length);
-			answerEasy [answerEasy.Length - 1] = el.answer;
+			answerEasy [tmp.Length] = el.answer;
+			tmp = new string[choiceEasy.Length];
+			Array.Copy (choiceEasy, tmp, choiceEasy.Length);
+			choiceEasy = new string[choiceEasy.Length + 1];
+			Array.Copy (tmp, choiceEasy, tmp.Length);
+			choiceEasy [tmp.Length] = el.choices;
 		}
 	}
 
@@ -76,12 +110,17 @@ public class monsterRequest : MonoBehaviour {
 			Array.Copy (questionMedium, tmp, questionMedium.Length);
 			questionMedium = new string[questionMedium.Length + 1];
 			Array.Copy (tmp, questionMedium, tmp.Length);
-			questionMedium [questionMedium.Length - 1] = el.question;
+			questionMedium [tmp.Length] = el.question;
 			tmp = new string[answerMedium.Length];
 			Array.Copy (answerMedium, tmp, answerMedium.Length);
 			answerMedium = new string[answerMedium.Length + 1];
 			Array.Copy (tmp, answerMedium, tmp.Length);
-			answerMedium [answerMedium.Length - 1] = el.answer;
+			answerMedium [tmp.Length] = el.answer;
+			tmp = new string[choiceMedium.Length];
+			Array.Copy (choiceMedium, tmp, choiceMedium.Length);
+			choiceMedium = new string[choiceMedium.Length + 1];
+			Array.Copy (tmp, choiceMedium, tmp.Length);
+			choiceMedium [tmp.Length] = el.choices;
 		}
 	}
 
@@ -93,12 +132,17 @@ public class monsterRequest : MonoBehaviour {
 			Array.Copy (questionHard, tmp, questionHard.Length);
 			questionHard = new string[questionHard.Length + 1];
 			Array.Copy (tmp, questionHard, tmp.Length);
-			questionHard [questionHard.Length - 1] = el.question;
+			questionHard [tmp.Length] = el.question;
 			tmp = new string[answerHard.Length];
 			Array.Copy (answerHard, tmp, answerHard.Length);
 			answerHard = new string[answerHard.Length + 1];
 			Array.Copy (tmp, answerHard, tmp.Length);
-			answerHard [answerHard.Length - 1] = el.answer;
+			answerHard [tmp.Length] = el.answer;
+			tmp = new string[choiceHard.Length];
+			Array.Copy (choiceHard, tmp, choiceHard.Length);
+			choiceHard = new string[choiceHard.Length + 1];
+			Array.Copy (tmp, choiceHard, tmp.Length);
+			choiceHard [tmp.Length] = el.choices;
 		}
 	}
 }
