@@ -16,5 +16,6 @@ public class buttonPotion : MonoBehaviour {
 			potionBuy.SetActive (false);
 			potionUse.SetActive (false);
 		}
+		Debug.Log(isPressed);
 	}
 }

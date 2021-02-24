@@ -22,7 +22,7 @@ public class playersRequest : MonoBehaviour {
 
 	IEnumerator tryFetch(UnityWebRequest www){
 		yield return www.Send ();
-		if (www.isError) {
+		if (www.isNetworkError) {
 			Debug.Log (www.error);
 		} else {
 			Debug.Log (www.downloadHandler.text);

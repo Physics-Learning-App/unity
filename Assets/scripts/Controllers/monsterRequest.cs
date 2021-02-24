@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class monsterRequest : MonoBehaviour {
-	private string baseUrl = "http://localhost:4001/monsters";
+	private string baseUrl = "http://18.141.207.6:4001/monsters";
 	public string[] questionEasy, questionMedium, questionHard;
 	public string[] answerEasy, answerMedium, answerHard;
 	public string[] choiceEasy, choiceMedium, choiceHard;
@@ -49,7 +49,7 @@ public class monsterRequest : MonoBehaviour {
 		UnityWebRequest www = UnityWebRequest.Get(_url);
 		yield return www.Send();
 
-		if(www.isError) {
+		if(www.isNetworkError) {
 			Debug.Log(www.error);
 		}
 		else {
@@ -62,7 +62,7 @@ public class monsterRequest : MonoBehaviour {
 		UnityWebRequest www = UnityWebRequest.Get(_url);
 		yield return www.Send();
 
-		if(www.isError) {
+		if(www.isNetworkError) {
 			Debug.Log(www.error);
 		}
 		else {
@@ -75,7 +75,7 @@ public class monsterRequest : MonoBehaviour {
 		UnityWebRequest www = UnityWebRequest.Get(_url);
 		yield return www.Send();
 
-		if(www.isError) {
+		if(www.isNetworkError) {
 			Debug.Log(www.error);
 		}
 		else {

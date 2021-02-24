@@ -13,7 +13,7 @@ public class fetchPlayer : MonoBehaviour {
 
 	IEnumerator fetchData(UnityWebRequest www){
 		yield return www.Send ();
-		if (www.isError) {
+		if (www.isNetworkError) {
 			Debug.Log (www.error);
 		} else {
 			Debug.Log (www.downloadHandler.text);
@@ -29,6 +29,7 @@ public class fetchPlayer : MonoBehaviour {
 		if (currentStage > 17) {
 			GetComponent<loginRequest> ().loadingScreen.SetActive (false);
 			GetComponent<loginRequest> ().allCleared.SetActive (true);
+			GetComponent<loginRequest> ().waitScreen.SetActive (false);
 			PlayerPrefs.DeleteAll ();
 		} else if (currentStage > 11) {
 			remoteScene.changeScreenTo ("gameplay2");

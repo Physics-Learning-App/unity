@@ -68,7 +68,13 @@ public class controllerActionNPC : MonoBehaviour {
 			Debug.Log ("Correct");
 			remoteUI.setCoin (2);
 			remoteUI.setScore (10);
-			remoteUI.updateCurrentStage (indexStage);
+			int additionIndexStage = 0;
+			if(difficulty == "hard"){
+				additionIndexStage = 12;
+			} else if (difficulty == "medium"){
+				additionIndexStage = 6;
+			}
+			remoteUI.updateCurrentStage(indexStage + additionIndexStage);
 			animatorPlayer.SetBool ("isCorrect", true);
 			coroutine = waitAnimationCompleted ();
 			StartCoroutine (coroutine);
@@ -101,12 +107,14 @@ public class controllerActionNPC : MonoBehaviour {
 	IEnumerator waitAnimationCompleted(){
 		yield return new WaitForSeconds (1.4f);
 		coverChoiceButton.SetActive (false);
+		
 		if (isBoss) {
 			iSoal++;
 			if (iSoal > 4) {
 				boxStageCleared.SetActive (true);
 				remoteMusic.setBgm (2, false);
 				remoteUI.setPositionCharacter (12.35f, 1.84f);
+				remoteUI.saveData();
 				controllerGame.GetComponent<playerRequest> ().tryPutPlayer (false);
 			} else {
 				imReady ();

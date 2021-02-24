@@ -12,6 +12,16 @@ public class controllerUI : MonoBehaviour {
 	public GameObject player;
 	public GameObject[] npc;
 
+	public void saveData() {
+		PlayerPrefs.SetInt("potion", potion);
+		PlayerPrefs.SetInt("score", score);
+		PlayerPrefs.SetInt("coin", coin);
+		PlayerPrefs.SetInt("currentStage", currentStage);
+		PlayerPrefs.SetFloat("positionX", player.GetComponent<Transform>().transform.position.x);
+		PlayerPrefs.SetFloat("positionZ", player.GetComponent<Transform>().transform.position.z);
+		PlayerPrefs.SetFloat("healthCurrent", healthCurrent);
+	}
+
 	void Awake(){
 		Time.timeScale = 0f;
 	}
@@ -76,7 +86,7 @@ public class controllerUI : MonoBehaviour {
 		} else if (currentStage > 5) {
 			baseStage = 6;
 		}
-		for (int i = baseStage; i < currentStage; i++) {
+		for (int i = 0; i < currentStage - baseStage; i++) {
 			npc [i].GetComponent<monsterAction> ().setIsCleared (true);
 		}
 	}

@@ -46,21 +46,22 @@ public class playerRequest : MonoBehaviour {
 			positionX = GetComponent<controllerUI> ().player.transform.position.x,
 			positionZ = GetComponent<controllerUI> ().player.transform.position.z
 		});
+		Debug.Log(GetComponent<controllerUI> ().currentStage);
 		coroutine = putData (request, changeScreen);
 		StartCoroutine (coroutine);
 	}
 
 	IEnumerator putData(UnityWebRequest res, bool value){
 		yield return res.Send ();
-		if (res.isError) {
+		if (res.isNetworkError) {
 			Debug.Log(res.error);
 		}
 		else {
 			Debug.Log(res.downloadHandler.text);
 			StopCoroutine (coroutine);
-			PlayerPrefs.DeleteAll ();
 			if (value) {
 				GetComponent<controllerScenes> ().changeScreenTo ("mainmenu");
+				PlayerPrefs.DeleteAll ();
 			}
 		}
 
@@ -68,7 +69,7 @@ public class playerRequest : MonoBehaviour {
 
 	IEnumerator postData(UnityWebRequest test) {
 		yield return test.Send ();
-		if(test.isError) {
+		if(test.isNetworkError) {
 			Debug.Log(test.error);
 		}
 		else {

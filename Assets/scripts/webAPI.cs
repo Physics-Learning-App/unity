@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class webAPI : MonoBehaviour {
-	private string baseUrl = "http://localhost:4001";
+	private string baseUrl = "http://18.141.207.6:4001";
 
 	public UnityWebRequest CreateApiGetRequest(string actionUrl, object body = null)
 	{
