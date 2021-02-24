@@ -57,6 +57,7 @@
      <Compile Include="Assets\scripts\Models\monsterResponse.cs" />
      <Compile Include="Assets\scripts\Models\playerResponse.cs" />
      <Compile Include="Assets\scripts\Models\playersResponse.cs" />
+     <Compile Include="Assets\scripts\buttonPotion.cs" />
      <Compile Include="Assets\scripts\canvasDefineChild.cs" />
      <Compile Include="Assets\scripts\characterMove.cs" />
      <Compile Include="Assets\scripts\controllerActionNPC.cs" />

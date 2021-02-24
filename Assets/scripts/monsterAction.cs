@@ -5,6 +5,7 @@ using UnityEngine;
 public class monsterAction : MonoBehaviour {
 	public string difficulty;
 	public int indexBackgroundFightMode, indexStage;
+	public bool isBoss;
 	private bool isCleared = false;
 	GameObject canvasNPC;
 	controllerActionNPC remoteActionNPC;
@@ -22,6 +23,7 @@ public class monsterAction : MonoBehaviour {
 			remoteActionNPC.setDifficulty (difficulty);
 			remoteActionNPC.setIndexSprite(indexBackgroundFightMode);
 			remoteActionNPC.setIndexStage (indexStage);
+			remoteActionNPC.setIsBoss (isBoss);
 		}
 	}
 

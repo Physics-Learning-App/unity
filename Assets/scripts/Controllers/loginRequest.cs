@@ -6,13 +6,24 @@ using UnityEngine.Networking;
 public class loginRequest : MonoBehaviour {
 	public Text username, textLoginFailed;
 	public InputField password;
-	public GameObject loadingScreen;
+	public GameObject loadingScreen, allCleared;
 	webAPI webApi;
 	private IEnumerator coroutine;
 
 	void Awake(){
 		if (PlayerPrefs.HasKey ("access_token")) {
-			GetComponent<controllerScenes> ().changeScreenTo ("gameplay");
+			int currentStage = PlayerPrefs.GetInt ("currentStage");
+			controllerScenes remoteScene = GetComponent<controllerScenes> ();
+			if (currentStage > 17) {
+				allCleared.SetActive (true);
+				PlayerPrefs.DeleteAll ();
+			} else if (currentStage > 11) {
+				remoteScene.changeScreenTo ("gameplay2");
+			} else if (currentStage > 5) {
+				remoteScene.changeScreenTo ("gameplay1");
+			} else {
+				remoteScene.changeScreenTo ("gameplay");
+			}
 		}
 	}
 

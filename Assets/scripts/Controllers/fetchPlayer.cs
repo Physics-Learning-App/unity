@@ -23,6 +23,22 @@ public class fetchPlayer : MonoBehaviour {
 		}
 	}
 
+	public void checkingWhereToChangeScence(){
+		int currentStage = PlayerPrefs.GetInt("currentStage");
+		controllerScenes remoteScene = GetComponent<controllerScenes> ();
+		if (currentStage > 17) {
+			GetComponent<loginRequest> ().loadingScreen.SetActive (false);
+			GetComponent<loginRequest> ().allCleared.SetActive (true);
+			PlayerPrefs.DeleteAll ();
+		} else if (currentStage > 11) {
+			remoteScene.changeScreenTo ("gameplay2");
+		} else if (currentStage > 5) {
+			remoteScene.changeScreenTo ("gameplay1");
+		} else {
+			remoteScene.changeScreenTo ("gameplay");
+		}
+	}
+
 	public void tryFetch(){
 		var request = webApi.CreateApiGetRequest ("/player");
 		coroutine = fetchData (request);

@@ -9,9 +9,10 @@ public class controllerActionNPC : MonoBehaviour {
 	public Text textQuestion;
 	public Text[] textChoice;
 	public Sprite[] backgroundArenaFightMode;
+	public GameObject[] enemies;
 
 	GameObject controllerGame, player, boxFightMode, arenaFightMode, textSolution;
-	GameObject boxWinning, boxGameOver;
+	GameObject boxWinning, boxGameOver, boxStageCleared, coverChoiceButton;
 	monsterRequest monsterReq;
 	controllerUI remoteUI;
 	controllerMusic remoteMusic;
@@ -19,6 +20,8 @@ public class controllerActionNPC : MonoBehaviour {
 	IEnumerator coroutine;
 	string difficulty;
 	int indexSprite, indexStage;
+	int iSoal = 0;
+	bool isBoss;
 
 	void Start(){
 		controllerGame = GameObject.Find ("controllerGame");
@@ -33,10 +36,12 @@ public class controllerActionNPC : MonoBehaviour {
 		textSolution = canvas.textSolution;
 		boxWinning = canvas.boxWinning;
 		boxGameOver = canvas.boxGameOver;
+		boxStageCleared = canvas.boxStageCleared;
+		coverChoiceButton = canvas.coverChoiceButton;
 	}
 
-	public void setQuestion(){
-		Problem dataQuiz = monsterReq.getQuestion (difficulty);
+	void bossMode(){
+		Problem dataQuiz = monsterReq.getQuestion (difficulty, iSoal);
 		textQuestion.text = dataQuiz.question;
 		textSolution.GetComponent<Text> ().text = dataQuiz.explanation;
 		answer = dataQuiz.answer;
@@ -46,41 +51,70 @@ public class controllerActionNPC : MonoBehaviour {
 		}
 	}
 
-	public void setSpriteFightMode(){
-		arenaFightMode.GetComponent<Image> ().sprite = backgroundArenaFightMode [indexSprite];
+	public void setQuestion(){
+		Problem dataQuiz = monsterReq.getQuestion (difficulty, indexStage - 1);
+		textQuestion.text = dataQuiz.question;
+		textSolution.GetComponent<Text> ().text = dataQuiz.explanation;
+		answer = dataQuiz.answer;
+		choice = dataQuiz.choices.Split(',');
+		for (int i = 0; i < choice.Length; i++) {
+			textChoice [i].text = choice [i];
+		}
 	}
 
 	public void tryAnswer(int index){
+		coverChoiceButton.SetActive (true);
 		if (textChoice [index].text == answer) {
 			Debug.Log ("Correct");
-			remoteUI.coin += 2;
-			remoteUI.score += 10;
+			remoteUI.setCoin (2);
+			remoteUI.setScore (10);
 			remoteUI.updateCurrentStage (indexStage);
 			animatorPlayer.SetBool ("isCorrect", true);
 			coroutine = waitAnimationCompleted ();
 			StartCoroutine (coroutine);
-
 		} else {
 			Debug.Log ("Wrong");
-			remoteUI.healthCurrent -= 1f;
-			if (remoteUI.healthCurrent <= 0) {
-				remoteUI.healthCurrent = 10;
-				remoteUI.score = 0;
-				remoteUI.coin = 0;
-				remoteUI.potion = 0;
-				remoteUI.currentStage = 0;
-				remoteUI.setPositionCharacter (12.35f, 1.84f);
-				boxGameOver.SetActive (true);
-				remoteMusic.setBgm (3, false);
-				controllerGame.GetComponent<playerRequest> ().tryPutPlayer (false);
-			}
+			remoteUI.setHealthCurrent(-1f);
+			enemies [indexStage - 1].GetComponent<Animator> ().SetBool ("isWrong", true);
+			coroutine = waitAnimationWrong ();
+			StartCoroutine (coroutine);
 		}
+	}
+
+	IEnumerator waitAnimationWrong(){
+		yield return new WaitForSeconds (1.4f);
+		coverChoiceButton.SetActive (false);
+		if (remoteUI.healthCurrent <= 0) { // gameover
+			remoteUI.healthCurrent = 10;
+			remoteUI.score = 0;
+			remoteUI.coin = 0;
+			remoteUI.potion = 0;
+			remoteUI.currentStage = 0;
+			remoteUI.setPositionCharacter (12.35f, 1.84f);
+			boxGameOver.SetActive (true);
+			remoteMusic.setBgm (3, false);
+			controllerGame.GetComponent<playerRequest> ().tryPutPlayer (false); //savedata
+		}
+		enemies [indexStage - 1].GetComponent<Animator> ().SetBool("isWrong", false);
 	}
 
 	IEnumerator waitAnimationCompleted(){
 		yield return new WaitForSeconds (1.4f);
-		boxWinning.SetActive (true);
-		remoteMusic.setBgm (2, false);
+		coverChoiceButton.SetActive (false);
+		if (isBoss) {
+			iSoal++;
+			if (iSoal > 4) {
+				boxStageCleared.SetActive (true);
+				remoteMusic.setBgm (2, false);
+				remoteUI.setPositionCharacter (12.35f, 1.84f);
+				controllerGame.GetComponent<playerRequest> ().tryPutPlayer (false);
+			} else {
+				imReady ();
+			}
+		} else {
+			boxWinning.SetActive (true);
+			remoteMusic.setBgm (2, false);
+		}
 	}
 
 	public void resetCanvas(){
@@ -95,12 +129,20 @@ public class controllerActionNPC : MonoBehaviour {
 	}
 
 	public void imReady(){
-		setQuestion ();
+		if (isBoss) {
+			bossMode ();
+			if (iSoal == 0) {
+				remoteMusic.setBgm (4);
+			}
+		} else {
+			setQuestion ();
+			remoteMusic.setBgm (1);
+		}
 		setSpriteFightMode ();
+		setEnemy ();
 		boxFightMode.SetActive (true);
 		boxFightMode.GetComponent<Animator> ().SetBool("isReady", true);
 		animatorPlayer.SetBool ("isCorrect", false);
-		remoteMusic.setBgm (1);
 	}
 
 	public void setDifficulty(string value) {
@@ -112,6 +154,32 @@ public class controllerActionNPC : MonoBehaviour {
 	}
 
 	public void setIndexStage(int value){
+		if (value > 12) {
+			value -= 12;
+		} else if (value > 6) {
+			value -= 6;
+		}
 		indexStage = value;
+	}
+
+	public void setIsBoss(bool value){
+		isBoss = value;
+	}
+
+	void setSpriteFightMode(){ //setbackground fight mode n solution
+		arenaFightMode.GetComponent<Image> ().sprite = backgroundArenaFightMode [indexSprite];
+		boxWinning.GetComponent<Image> ().sprite = backgroundArenaFightMode [indexSprite];
+	}
+
+	void setEnemy(){ //set which enemy will active in fight mode
+		bool isToActivated;
+		for (int i = 0; i < enemies.Length; i++) {
+			if (i == indexStage - 1) {
+				isToActivated = true;
+			} else {
+				isToActivated = false;
+			}
+			enemies [i].SetActive (isToActivated);
+		}
 	}
 }

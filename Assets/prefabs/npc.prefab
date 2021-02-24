@@ -38,8 +38,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1673154916544830}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 35.52, y: -4.41, z: 1.62}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 1}
+  m_LocalPosition: {x: 29.9, y: -4.41, z: 20.31}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -54,7 +54,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4.3, y: 5.1900015, z: 0.20000005}
+  m_Size: {x: 2.34, y: 2.64, z: 0.20000003}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &95406844174856252
 Animator:
@@ -98,7 +98,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1359bae2dca2af49aa630d4e368e291, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasNPC: {fileID: 0}
+  difficulty: easy
+  indexBackgroundFightMode: 1
+  indexStage: 6
 --- !u!212 &212790190263777914
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -131,7 +133,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c82a236a5b965e248bbb054f8a80df6c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f9fede1ce4253f64b986a73934e73c69, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
